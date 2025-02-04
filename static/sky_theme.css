@@ -1,0 +1,6 @@
+:root {
+    --goofy: #1e90ff;
+    --silly: #ffffff;
+
+    --really: var(--goofy);
+  }

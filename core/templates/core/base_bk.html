@@ -1,40 +1,39 @@
 {% load static tailwind_tags %}
-<!DOCTYPE html>
-<html lang="en" data-theme="my_sky_theme">
-<head>
-    <title>Granary Watch CRM</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    {% tailwind_css %}
-</head>
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {% tailwind_css %}       
+        <title>Granary Watch CRM</title>
+    </head>
 
-<body class="font-sansserif leading-normal tracking-normal">
+    <body class="font-sansserif leading-normal tracking-normal bg-primary-900">
 
-    <div class="flex h-screen">
+        <div class="flex h-screen">
 
-        <aside class="flex-none w-48 p-4">
-            {% include "crm/sidebar.html" %}
-        </aside>
+            <aside class="flex-none w-48 p-4 bg-primary-700">
+                {% include "core/sidebar.html" %}
+            </aside>
 
-        <main class="flex-1 flex flex-col overflow-y-auto">
+            <main class="flex-1 flex flex-col overflow-y-auto">
 
-            <header class="p-4 shadow-md">
-                {% include "crm/header.html" %}
-            </header>
+                <header class="p-4 shadow-md bg-primary-500">
+                    {% include "core/header.html" %}
+                </header>
 
-            <div class="p-6 flex-grow">
-                {% block content %}
-                {% endblock %}
-            </div>
+                <div class="p-6 flex-grow bg-primary-400">
+                    {% block content %}
+                    {% endblock %}
+                </div>
 
-            <footer class="p-4 text-center">
-                {% include "crm/footer.html" %}
-            </footer>
+                <footer class="p-4 text-center bg-primary-500">
+                    {% include "core/footer.html" %}
+                </footer>
 
-        </main>
+            </main>
 
-    </div>
+        </div>
 
-</body>
+    </body>
 </html>

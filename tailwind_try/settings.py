@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     # ========Thrid party apps========
     'django_extensions',
     "template_partials",
+    'tailwind',
+    'theme',
+    'django_browser_reload',
+
 
     # ========My apps========
     'core',
@@ -55,9 +59,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 ROOT_URLCONF = 'tailwind_try.urls'
+TAILWIND_APP_NAME = 'theme'
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 TEMPLATES = [
     {

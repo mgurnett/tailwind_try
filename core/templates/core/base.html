@@ -1,6 +1,6 @@
 {% load static tailwind_tags %}
 <!DOCTYPE html>
-<html lang="en" data-theme="aqua">
+<html lang="en" data-theme="mytheme">
 	<head>
     <title>Django Tailwind</title>
 		<meta charset="UTF-8">
@@ -9,39 +9,33 @@
 		{% tailwind_css %}
 	</head>
 
-	<body class="bg-goofy font-sansserif leading-normal tracking-normal">
-		<div class="container mx-auto">
-			<section class="flex items-center justify-center h-screen">
-				<h1 class="text-5xl">Django + Tailwind = ❤️</h1>
+	<body class="bg-base-100 font-sansserif leading-normal tracking-normal">
 
-				<div>
-					<button class="btn btn-active">Default</button>
-					<button class="btn btn-active btn-neutral">Neutral</button>
-					<button class="btn btn-active btn-primary">Primary</button>
-					<button class="btn btn-active btn-secondary">Secondary</button>
-					<button class="btn btn-active btn-accent">Accent</button>
-					<button class="btn btn-active btn-ghost">Ghost</button>
-					<button class="btn btn-active btn-link">Link</button>
-				  </div>
-			</section>
+			<div class="flex h-screen">
+	
+				<aside class="flex-none w-48 p-4 bg-base-100">
+					{% include "core/sidebar.html" %}
+				</aside>
+	
+				<main class="flex-1 flex flex-col overflow-y-auto">
+	
+					<header class="p-4 shadow-md bg-base-100">
+						{% include "core/header.html" %}
+					</header>
+	
+					<div class="p-6 flex-grow bg-base-100">
+						{% block content %}
+						{% endblock %}
+					</div>
+	
+					<footer class="p-4 text-center bg-base-100">
+						{% include "core/footer.html" %}
+					</footer>
+	
+				</main>
+	
+			</div>
 		</div>
-		<div class="drawer lg:drawer-open">
-			<input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-			<div class="drawer-content flex flex-col items-center justify-center">
-			  <!-- Page content here -->
-			  <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden">
-				Open drawer
-			  </label>
-			</div>
-			<div class="drawer-side">
-			  <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
-			  <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-				<!-- Sidebar content here -->
-				<li><a>Sidebar Item 1</a></li>
-				<li><a>Sidebar Item 2</a></li>
-			  </ul>
-			</div>
-		  </div>
 	</body>
 </html>
 

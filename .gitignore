@@ -45,3 +45,27 @@ venv.bak/
 
 # mkdocs documentation
 /site
+
+
+# DaisyUI
+node_modules
+yarn.lock
+/package-lock.json
+.next
+/dist
+/colors
+/imports.js
+.idea
+.DS_Store
+*.tgz
+/coverage
+.unlighthouse
+.logs
+
+/base
+/components
+/utilities
+/theme
+
+/*.css
+/packages

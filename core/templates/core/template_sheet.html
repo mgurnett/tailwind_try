@@ -1,30 +1,30 @@
 {% extends 'core/base.html' %}
 {% block content %}
 
-<table class="table">
-    <tr>
+<table class="bg-base-100">
+    <tr class="border-4 border-accent dark:border-accent">
         <th>Function</th>
         <th>HEX</th>
         <th>Name</th>
         <th>Notes</th>
-        <th>button</th>
+        <th class="bg-base-100">dictionary</th>
     </tr>
     {% for color in colors %}
-    <tr>
-        <td class="bg-base-100 px-4">
+    <tr class="border-4 border-accent bg-base-100">
+        <td class="text-{{color.function}} px-4">
             {{color.function}}
         </td>
-        <td class="bg-base-100 text-{{color.function}} px-4">
-            {{color.hex}}
+        <td class="bg-base-100 px-4">
+            <button class="btn btn-{{color.function}}">{{color.hex}}</button>
         </td>
-        <td class="bg-{{color.function}} px-4">
-            {{color.name}}
+        <td class="px-4">
+            <div class="badge badge-{{color.function}} ">{{color.name}}</div>
         </td>
-        <td class="bg-{{color.function}} px-4">
+        <td class="bg-gradient-to-r from-success via-warning to-error hover:from-error hover:via-warninghover:to-success px-4">
             {{color.notes}}
         </td>
-        <td class="bg-base-100 px-4">
-            <button class="btn btn-{{color.function}}">{{color.function}}</button>
+        <td class=" px-4 text-goofy">
+            "{{color.function}}": "{{color.hex}}",
         </td>
     </tr>
     {% endfor %}
@@ -41,5 +41,16 @@
     <button class="btn btn-active btn-ghost">Ghost</button>
     <button class="btn btn-active btn-link">Link</button>
   </div>
+  <div>
+      <button class="badge ">Default</button>
+      <button class="badge  badge-neutral">Neutral</button>
+      <button class="badge  badge-primary">Primary</button>
+      <button class="badge  badge-secondary">Secondary</button>
+      <button class="badge  badge-accent">Accent</button>
+      <button class="badge  badge-success">Success</button>
+      <button class="badge  badge-warning">Warning</button>
+      <button class="badge  badge-error">Error</button>
+      <button class="badge  badge-ghost">Ghost</button>
+    </div>
 
 {% endblock %} 

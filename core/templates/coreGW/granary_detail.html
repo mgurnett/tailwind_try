@@ -1,0 +1,85 @@
+{% extends "core/base.html" %}
+{% load temp %}
+{% block content %}  
+  <table class="w3-table w3-card-4 w3-striped w3-border w3-bordered">
+    <tr class="w3-theme-l1">
+      <td style="text-align: center;"><h4>{{granary.name}} - {{granary.description}}</h4></td>
+      <td style="text-align: center;"><h4>Last time seen online</h4></td>
+      <td style="text-align: center;">
+        <a href="{% url 'granary_graph' granary.id %}">
+          <button class="w3-btn w3-khaki">History</button>
+        </a> 
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;"><h4><b>{{granary.serial_number}}</b></h4></td>
+      <td style="text-align: center;"><h4>{% date_format granary.latest_update %}</h4></td>
+      <td style="text-align: center;">
+        <form action="{% url 'alarm_clear' granary.id %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="chain"  value="{{ granary.id }}">
+          <button class="w3-btn w3-purple" type="submit">Clear alarms</button>
+        </form> 
+        <form action="{% url 'replace_battery' granary.id %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="chain"  value="{{ granary.id }}">
+          <button class="w3-btn w3-orange" type="submit">Replace Battery</button>
+        </form> 
+      </td>
+    </tr>  
+  </table>
+  
+  <table class="w3-table w3-card-4 w3-striped w3-border w3-bordered">
+    <tr class="w3-theme-l1">
+      <td style="text-align: center;"><h4>Sensor depth from top</h4></td>
+      <td style="text-align: center;"><h4>Latest reading</h4></td>
+      <td style="text-align: center;"><h4>Number of readings</h4></td>
+      <td style="text-align: center;"><h4>OneWire ID</h4></td>
+      <td style="text-align: center;"><h4>Alarm set point</h4></td>
+      <td style="text-align: center;"></td>
+    </tr>
+    {% for sen in sensors %}
+      <tr>
+        <td style="text-align: center;"><h4><a href="{% url 'sensor_detail' sen.id %}">{{sen.depth__str}}</h4></td>     
+        {% if sen.num_of_readings > 0 %}
+          <td style="text-align: center;"><h4>{% temp_with_colour__html sen.latest_reading.value sen.alarm sen.high_reading.alarm_state  %}</h4></td>
+        {% else %}
+          <td style="text-align: center;"><h4>No readings</h4></td>
+        {% endif %}
+        <td style="text-align: center;"><h4>{{sen.num_of_readings}}</h4></td> 
+        <td style="text-align: center;"><h4>{{sen.wire1_id}}</h4></td>
+        <td style="text-align: center;"><h4>{{sen.alarm__str | safe}}</h4></td>
+        <td style="text-align: center;">{% alarm_state__html sen.high_reading.alarm_state %}</td>
+      </tr>  
+    {% endfor %}
+  </table>
+  
+  <table class="w3-table w3-card-4 w3-striped w3-border w3-bordered">
+    <tr class="w3-theme-l1">
+      <td style="text-align: center;"><h4>Internal temp</h4></td>
+      <td style="text-align: center;"><h4>Battery voltage</h4></td>
+      <td style="text-align: center;"><h4>Number of sensors</h4></td>
+      <td style="text-align: center;"><h4>Number of readings</h4></td>
+      <td style="text-align: center;"><h4>ip</h4></td>
+    </tr>
+
+    <tr>
+      <td style="text-align: center;">
+        {% if granary.internal_temperature is not None %}
+          <h4>{{granary.internal_temperature}}</h4>
+        {% endif %}
+      </td>
+      <td style="text-align: center;"><h4>
+        {% if granary.battery_voltage is not None %}
+          <a href="{% url 'battery_graph' granary.id %}">
+              <h4>{% battery_voltage__html granary.battery_voltage %}</h4>
+          </a>
+        {% endif %}
+      </h4></td>
+      <td style="text-align: center;"><h4>{{granary.num_of_sensors}}</h4></td> 
+      <td style="text-align: center;"><h4>{{granary.num_of_readings}}</h4></td> 
+      <td style="text-align: center;"><h4>{{granary.ip}}</h4></td>
+    </tr>  
+  </table>
+{% endblock %}
+

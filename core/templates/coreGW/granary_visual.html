@@ -1,0 +1,113 @@
+{% extends "core/base.html" %}
+{% load temp %}
+{% block content %}
+{% load static %}
+<style>
+    .specific-grid {
+        padding-top: 200px;
+        padding-bottom: 400px;
+    }
+    .loader {
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite; /* Safari */
+        animation: spin 2s linear infinite;
+        }
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+
+<div class="w3-row w3-theme">
+    <div class="w3-col s8">
+        <div class="w3-container w3-center">
+            <div class="w3-grid">
+                <div class="grid-content">
+                    <div class="w3-row w3-padding">
+                        <div class="w3-container w3-center" id="graph-container" hx-get="{% url 'get_graph' granary.id %}" hx-target="#graph-container" hx-trigger="every 5s">
+                            <div class="loader"></div> 
+                        </div>
+                    </div>
+                    <div class="w3-row w3-padding">
+                        <div class="w3-col s12">
+                            <h3>Last time seen online: 
+                                <div id="latest_update-{{ granary.id }}"  
+                                  hx-get="{% url 'live_latest_updates' granary.id %}"   
+                                  hx-target="#latest_update-{{ granary.id }}" 
+                                  hx-trigger="every 5s">
+                                </div> ({{granary.ip}})</h3>
+                        </div>
+                    </div>
+                    {% if granary.battery_voltage is not None %}
+                    <div class="w3-row w3-padding">
+                        <div class="w3-col s12">
+                            <div id="live_battery_update-{{ granary.id }}"  
+                              hx-get="{% url 'live_battery_update' granary.id %}"   
+                              hx-target="#live_battery_update-{{ granary.id }}" 
+                              hx-trigger="every 5s">
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <div class="w3-col s4">  <!--  image side  -->
+        <div class="w3-container w3-center">
+            <div class="w3-grid" style="background-image: url('{% static "core/Granary_revised.png" %}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+                <div class="grid-content specific-grid">
+                    <div class="w3-row w3-padding">
+                        <div class="w3-col s6"> 
+                            <form action="{% url 'alarm_clear' granary.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="chain"  value="{{ granary.id }}">
+                                <button class="w3-btn w3-purple" type="submit">Clear alarms</button>
+                            </form> 
+                        </div>
+                        <div class="w3-col s6"> 
+                            <a href="{% url 'granary_graph' granary.id %}">
+                                <button class="w3-btn w3-khaki">History</button>
+                            </a> 
+                        </div>
+                    </div>
+                    {% for sen in sensors %}
+                        <div class="w3-row w3-padding-16">
+                            <div class="w3-col s1"> 
+                                <p></p>
+                            </div>
+                            <div class="w3-col s3 w3-text-black w3-xlarge"> 
+                                {{sen.depth__str}}
+                            </div>
+                            <div class="w3-col s4 w3-text-black w3-xlarge">  {# HTMX attributes here #}
+                                {% if sen.num_of_readings > 0 %}
+                                    <div id="temp-container-{{ sen.id }}"  
+                                        hx-get="{% url 'get_temp' sen.id %}"   
+                                        hx-target="#temp-container-{{ sen.id }}" 
+                                        hx-trigger="every 5s">
+                                        <p></p>
+                                    </div>
+                                {% else %}
+                                    No readings
+                                {% endif %}
+                            </div>
+                            <div class="w3-col s4 w3-text-black">
+                                {% if sen.num_of_readings > 0 %}
+                                    {% alarm_state__html sen.high_reading.alarm_state %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "core/base.html" %}
+{% block content %}
+    {% if graph %}
+        <div class="w3-card-4">
+            {{ graph|safe }}
+        </div>
+    {% endif %}
+{% endblock %}

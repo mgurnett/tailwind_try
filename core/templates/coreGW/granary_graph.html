@@ -1,0 +1,9 @@
+{% extends "core/base.html" %}
+{% block content %}
+    {% if graph %}
+        <div style="width:600;height:800">
+        <div>
+            {{ graph|safe }}
+        </div>
+    {% endif %}
+{% endblock %}

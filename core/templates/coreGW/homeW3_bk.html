@@ -1,0 +1,41 @@
+{% extends "core/base.html" %}
+{% load temp %}  <!-- load the templatetags-->
+{% block content %}
+
+  <table class="w3-table-all w3-card-4 w3-striped w3-border w3-bordered">
+    <tr class="w3-theme-l1">
+      <td style="text-align: center;"><h3>Granary</h3></td>
+      <td style="text-align: center;"><h3>Highest current temp</h3></td>
+      <td style="text-align: center;"><h3>Latest update</h3></td>
+      <td style="text-align: center;"><h3>Battery Voltage</h3></td>
+      <td style="text-align: center;"></td>
+    </tr>
+    {% for granary in granaries %}   
+      <tr>
+        <td style="text-align: left;"><a href="{% url 'granary_visual' granary.id %}"><h3><b>{{granary.serial_number}} {{granary.description}}</b></h3></a></td>
+        <td style="text-align: center;">
+          {% if granary.highest_current_temp.sensor %}
+          <h3>At {{granary.highest_current_temp.sensor.depth__str}}, the temperature is: {% temp_text_colour__html granary.highest_current_temp.value granary.highest_current_temp.sensor.alarm granary.highest_current_temp.alarm_state %}</h3>
+          {% endif %}
+        </td>
+        <td style="text-align: left;">
+          <h3>{% date_format granary.latest_update %}</h3>
+        </td> 
+        <td style="text-align: center;">
+          {% if granary.battery_voltage is not None %}
+            Battery is: {{granary.battery_voltage}}V
+            <div id="volt-container-{{ granary.id }}"  
+                hx-get="{% url 'battery_display' granary.id %}" 
+                hx-target="#volt-container-{{ granary.id }}" 
+                hx-trigger="every 5s">
+            </div>
+          {% else %}
+            <h3>No battery {{granary}}</h3>
+          {% endif %}
+        </td>
+        <td style="text-align: center;"><a href="{% url 'granary_detail' granary.id %}" class="w3-btn w3-green">Details</a></td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %} 

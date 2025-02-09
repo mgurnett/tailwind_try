@@ -1,0 +1,47 @@
+{% extends "core/base.html" %}
+{% load temp %}
+{% block content %}
+
+<div class="w3-sidebar w3-bar-block w3-theme" style="width:130px">
+    <h5 class="w3-bar-item">Menu</h5>
+    <button class="w3-bar-item w3-button tablink" onclick="openUtil(event, 'Stats')"><b>Stats</b></button>
+    <button class="w3-bar-item w3-button tablink" onclick="openUtil(event, 'Archive')"><b>Archive</b></button>
+    <button class="w3-bar-item w3-button tablink" onclick="openUtil(event, 'Enable')"><b>Enable</b></button>
+  </div>
+  
+  <div style="margin-left:130px">
+  
+    <div id="Stats" class="w3-container utility w3-theme">
+      {% include "./snippits/stats.html" %}
+    </div>
+  
+    <div id="Archive" class="w3-container utility w3-theme" style="display:none">
+      <h2>Archive</h2>
+      <p>Paris is the capital of France.</p> 
+      <p>The Paris area is one of the largest population centers in Europe, with more than 12 million inhabitants.</p>
+    </div>
+  
+    <div id="Enable" class="w3-container utility w3-theme" style="display:none">
+      <h2>Enable</h2>
+      <p>Tokyo is the capital of Japan.</p>
+      <p>It is the center of the Greater Tokyo Area, and the most populous metropolitan area in the world.</p>
+    </div>
+  
+  </div>
+  
+  <script>
+  function openUtil(evt, cityName) {
+    var i, x, tablinks;
+    x = document.getElementsByClassName("utility");
+    for (i = 0; i < x.length; i++) {
+      x[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablink");
+    for (i = 0; i < x.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" w3-indigo", ""); 
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " w3-indigo";
+  }
+  </script>
+{% endblock %}

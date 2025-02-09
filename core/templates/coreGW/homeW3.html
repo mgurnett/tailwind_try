@@ -1,0 +1,83 @@
+{% extends "core/base.html" %}
+{% load temp %}  <!-- load the templatetags-->
+
+{% block content %}
+
+  <table class="w3-table-all w3-card-4 w3-striped w3-border w3-bordered">
+    <tr class="w3-theme-l1">
+      <td style="text-align: center;"><h3>Granary</h3></td>
+      <td style="text-align: center;"><h3>Highest current temp</h3></td>
+      <td style="text-align: center;"><h3>Latest update</h3></td>
+      <td style="text-align: center;"><h3>Battery Voltage</h3></td>
+      <td style="text-align: center;"></td>
+    </tr>
+    {% for granary in granaries %}   
+      <tr>
+        <td style="text-align: left;">
+          <a href="{% url 'granary_visual' granary.id %}">
+            <h3><b>{{granary.serial_number}} {{granary.description}}</b></h3>
+          </a>
+        </td>
+
+        <td style="text-align: center;">
+          <div id="latest_high_temp-{{ granary.id }}"  
+            hx-get="{% url 'live_high_temp_update' granary.id %}"   
+            hx-target="#latest_high_temp-{{ granary.id }}" 
+            hx-trigger="every 5s">
+          </div>
+        </td>
+
+        <td style="text-align: left;">
+          <div id="latest_update-{{ granary.id }}"  
+            hx-get="{% url 'live_latest_updates' granary.id %}"   
+            hx-target="#latest_update-{{ granary.id }}" 
+            hx-trigger="every 5s">
+          </div>
+        </td> 
+
+        <td style="text-align: center;">
+          <div id="live_battery_update-{{ granary.id }}"  
+            hx-get="{% url 'live_battery_update' granary.id %}"   
+            hx-target="#live_battery_update-{{ granary.id }}" 
+            hx-trigger="every 5s">
+          </div>
+        </td>
+
+        <td style="text-align: center;"><a href="{% url 'granary_detail' granary.id %}" class="w3-btn w3-green">Details</a></td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+
+{% endblock %} 
+
+
+<!--  There are two ways of doeing this. The first is to treat this like an include.  This allows you to resue it, but the code is elsewere.
+  The seond way is to write out the code and use the partialdef tag with the inline argument.  This means that the code is in place, but still 
+  avaialbe to be resued elsewhere.
+
+To use this code (partialdef) in another page all you need todo is to: add {#{% include home.html#latest_update %}#} and then 
+ we can use the code in THAT page.
+
+ This means that we can write the code for htmx in one page and reuse it in another.
+ Love battery voltage on a settings page means we can reuse the code on any other page.
+-->
+
+{% startpartial highest_temp %}
+{% if granary.highest_current_temp.sensor %}
+  <h3>At {{granary.highest_current_temp.sensor.depth__str}}, the temperature is: {% temp_text_colour__html granary.highest_current_temp.value granary.highest_current_temp.sensor.alarm granary.highest_current_temp.alarm_state %}</h3>
+{% endif %}
+{% endpartial highest_temp %}
+
+
+{% startpartial battery_voltage %}
+{% if granary.battery_voltage is not None %}
+  <a href="{% url 'battery_graph' granary.id %}">
+      <h3>{% battery_voltage__html granary.battery_voltage %}</h3>
+  </a>
+{% endif %}
+{% endpartial battery_voltage %}
+
+{% startpartial latest_update %}
+  <h3>{% date_format granary.latest_update %}</h3>
+{% endpartial latest_update %}

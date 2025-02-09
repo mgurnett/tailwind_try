@@ -1,0 +1,38 @@
+{% extends "core/base.html" %}
+{% load temp %}
+{% block content %}
+  
+  <table class="w3-table w3-card-4 w3-striped w3-border w3-bordered">
+    <tr class="w3-theme-l1">
+      <td style="text-align: center;"><h3>Bin</h3></td>
+      <td style="text-align: center;"><h3>Sensor depth</h3></td>
+      <td style="text-align: center;"><h3>OneWire ID</h3></td>
+      <td style="text-align: center;"><h3>Alarm</h3></td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <a href="{% url 'granary_detail' sensor.chain.id %}">
+          {{sensor.chain.name}} - {{sensor.chain.description}}
+        </a>
+      </td>
+      <td style="text-align: center;">{{sensor.depth}} feet from the top</td>
+      <td style="text-align: center;">{{sensor.wire1_id}}</td>
+      <td style="text-align: center;">{{sensor.alarm__str | safe}}</td>
+    </tr>  
+  </table>
+  
+  <table class="w3-table w3-card-4 w3-striped w3-border w3-bordered">
+    <tr class="w3-theme-l1">
+      <td style="text-align: center;"><h3>Time taken</h3></td>
+      <td style="text-align: center;"><h3>Temperature</h3></td>
+      <td style="text-align: center;"><h3>Alarm state</h3></td>
+    </tr>
+      {% for read in readings %}{# https://youtu.be/cUK9nSQuSIA?si=IK6I15Y41MlmdrFn&t=929 #}
+        <tr>
+          <td style="text-align: center;">{% date_format read.recorded %}</td>
+          <td style="text-align: center;">{% temp_with_colour__html read.value read.sensor.alarm read.alarm_state  %}</td>
+          <td style="text-align: center;">{% alarm_state__html read.alarm_state %}</td>
+        </tr>  
+      {% endfor %} 
+  </table>
+{% endblock %}

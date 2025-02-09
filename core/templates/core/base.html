@@ -12,35 +12,27 @@
 	<body class="bg-base-100 font-sansserif leading-normal tracking-normal">
 		<div class="flex flex-row">
 
-			<nav class="bg-base-200 basis-1/12 h-screen">
-				<div class="flex flex-col justify-between h-screen p-4">
-					<div class="flex flex-col space-y-4">
-						<div class="flex space-x-4">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-								<path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
-								<path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
-							</svg>
-							<div>Home
-							</div>
-						</div>
-						<div class="flex space-x-4">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-								<path d="M11.644 1.59a.75.75 0 0 1 .712 0l9.75 5.25a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.712 0l-9.75-5.25a.75.75 0 0 1 0-1.32l9.75-5.25Z" />
-								<path d="m3.265 10.602 7.668 4.129a2.25 2.25 0 0 0 2.134 0l7.668-4.13 1.37.739a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.71 0l-9.75-5.25a.75.75 0 0 1 0-1.32l1.37-.738Z" />
-								<path d="m10.933 19.231-7.668-4.13-1.37.739a.75.75 0 0 0 0 1.32l9.75 5.25c.221.12.489.12.71 0l9.75-5.25a.75.75 0 0 0 0-1.32l-1.37-.738-7.668 4.13a2.25 2.25 0 0 1-2.134-.001Z" />
-							</svg>
-							<div>Utilities
-							</div>						  
-						</div>
-						<div class="flex space-x-4">3</div>
-						<div class="flex space-x-4">4</div>
-					</div>
-					<div>2</div>
-				</div>
-			</nav>
+			{% include "core/sidebar.html" %}
 
 			<main class="bg-base-100 basis-11/12 h-screen">
-					Main area
+					
+				<main class="flex-1 flex flex-col h-screen overflow-y-auto">
+	
+					<header class="p-4 shadow-md bg-base-100">
+						{% include "core/header.html" %}
+					</header>
+	
+					<div class="p-6 flex-grow bg-base-100">
+						{% block content %}
+						{% endblock %}
+					</div>
+	
+					<footer class="p-4 text-center bg-base-100">
+						{% include "core/footer.html" %}
+					</footer>
+	
+				</main>
+
 			</main>
 
 		</div>

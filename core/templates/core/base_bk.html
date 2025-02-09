@@ -1,39 +1,43 @@
 {% load static tailwind_tags %}
-<!doctype html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        {% tailwind_css %}       
-        <title>Granary Watch CRM</title>
-    </head>
+<!DOCTYPE html>
+<html lang="en" data-theme="mytheme">
+	<head>
+    <title>Django Tailwind</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		{% tailwind_css %}
+	</head>
 
-    <body class="font-sansserif leading-normal tracking-normal bg-primary-900">
+	<body class="bg-base-100 font-sansserif leading-normal tracking-normal">
 
-        <div class="flex h-screen">
-
-            <aside class="flex-none w-48 p-4 bg-primary-700">
-                {% include "core/sidebar.html" %}
-            </aside>
-
-            <main class="flex-1 flex flex-col overflow-y-auto">
-
-                <header class="p-4 shadow-md bg-primary-500">
-                    {% include "core/header.html" %}
-                </header>
-
-                <div class="p-6 flex-grow bg-primary-400">
-                    {% block content %}
-                    {% endblock %}
-                </div>
-
-                <footer class="p-4 text-center bg-primary-500">
-                    {% include "core/footer.html" %}
-                </footer>
-
-            </main>
-
-        </div>
-
-    </body>
+			<div class="flex h-screen bg-base-100">
+	
+				<aside class="flex-none w-48 p-4 bg-base-200 border-r-4 border-indigo-600 ">
+					{% include "core/sidebar.html" %}
+				</aside>
+	
+				<main class="flex-1 flex flex-col overflow-y-auto">
+	
+					<header class="p-4 shadow-md bg-base-100">
+						{% include "core/header.html" %}
+					</header>
+	
+					<div class="p-6 flex-grow bg-base-100">
+						{% block content %}
+						{% endblock %}
+					</div>
+	
+					<footer class="p-4 text-center bg-base-100">
+						{% include "core/footer.html" %}
+					</footer>
+	
+				</main>
+	
+			</div>
+		</div>
+	</body>
 </html>
+
+
+<!-- https://youtu.be/K1e8kpoag0E?si=mxAg00pfl5ICUra4 -->

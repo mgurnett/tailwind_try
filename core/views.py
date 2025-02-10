@@ -1,4 +1,11 @@
-from django.views.generic import TemplateView
+from .models import *
+from django.conf import settings
+from django.core.paginator import Paginator
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic.base import TemplateView
+from django.views.generic import View
+from core.helpers.graph_functions import *
+from core.helpers.archive import *
 
 colors = [
     {"function": "primary",             "hex": "#6686b9", "name": "Ship Cove", "notes": "Dark accent"},
@@ -29,7 +36,15 @@ colors = [
 
 class HomeView(TemplateView):
     template_name = "core/home.html"
+    model = Reading
 
+    def get_context_data(self, **kwargs):
+ 
+        context = super(HomeView, self).get_context_data(**kwargs)
+        context['granaries'] = Chain.objects.all()
+        # context['sensors'] = Sensor.objects.all()
+        return context
+ 
 
 class TemplateView(TemplateView):
     template_name = "core/template_sheet.html"
@@ -40,18 +55,36 @@ class TemplateView(TemplateView):
         # print (colors)
         context['colors'] = colors
         return context
+    
+
+# ============LIVE UPDATES================= 
+
+
+def live_latest_update(request, pk):
+    bin = get_object_or_404(Chain, pk=pk)
+    return render(request, 
+                  'core/home.html#latest_update',
+                  {'granary': bin}
+                  )
+
+
+def live_high_temp_update(request, pk):
+    bin = get_object_or_404(Chain, pk=pk)
+    return render(request, 
+                  'core/home.html#highest_temp',
+                  {'granary': bin}
+                  )
+
+
+def live_battery_update(request, pk):
+    bin = get_object_or_404(Chain, pk=pk)
+    return render(request, 
+                  'core/home.html#battery_voltage',
+                  {'granary': bin}
+                  )
 
 
 '''
-from .models import *
-from django.conf import settings
-from django.core.paginator import Paginator
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic.base import TemplateView
-from django.views.generic import View
-from core.helpers.graph_functions import *
-from core.helpers.archive import *
-
 
 class Utilities(TemplateView):
     template_name = "core/tabs.html"
@@ -64,18 +97,6 @@ class Utilities(TemplateView):
         # context['sensors'] = Sensor.objects.all()
         return context
 
-
-class Home(TemplateView):
-    template_name = "core/homeW3.html"
-    model = Reading
-
-    def get_context_data(self, **kwargs):
- 
-        context = super(Home, self).get_context_data(**kwargs)
-        context['granaries'] = Chain.objects.all()
-        # context['sensors'] = Sensor.objects.all()
-        return context
- 
 
 class GranaryDetail(TemplateView):
     template_name = "core/granary_detail.html"
@@ -153,30 +174,6 @@ class GetGraphView(View):
 def get_temp(request, pk): # pk because it is the primary key
     sensor = get_object_or_404(Sensor, pk=pk)
     return render(request, 'core/htmx/g_v/temp.html', {'sen': sensor})  # Pass the sensor object
-
-
-def live_latest_update(request, pk):
-    bin = get_object_or_404(Chain, pk=pk)
-    return render(request, 
-                  'core/homeW3.html#latest_update',
-                  {'granary': bin}
-                  )
-
-
-def live_high_temp_update(request, pk):
-    bin = get_object_or_404(Chain, pk=pk)
-    return render(request, 
-                  'core/homeW3.html#highest_temp',
-                  {'granary': bin}
-                  )
-
-
-def live_battery_update(request, pk):
-    bin = get_object_or_404(Chain, pk=pk)
-    return render(request, 
-                  'core/homeW3.html#battery_voltage',
-                  {'granary': bin}
-                  )
 
 
 

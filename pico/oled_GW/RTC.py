@@ -2,20 +2,18 @@ import machine
 import time
 import utime
 import struct
+import constants as const
 import socket
 import urequests
-
-# from archive.board_devices import *
+from board_devices import *
 from wifi import *
+from machine import Pin
 
-
-def time_string():
-    return f"{time.localtime()[0]}-{time.localtime()[1]}-{time.localtime()[2]} {time.localtime()[3]}:{time.localtime()[4]:02}:{time.localtime()[5]:02}"
-
-
-def set_time(hrs_offset=-5, debug=False):
+def set_time(hrs_offset=-5, debug = False):
     NTP_DELTA = 2208988800
     host = "pool.ntp.org"
+
+    led = Pin("LED", Pin.OUT)
 
     NTP_QUERY = bytearray(48)
     NTP_QUERY[0] = 0x1B
@@ -30,19 +28,19 @@ def set_time(hrs_offset=-5, debug=False):
     finally:
         s.close()
     val = struct.unpack("!I", msg[40:44])[0]
-    t = val - NTP_DELTA + hrs_offset * 3600
+    t = val - NTP_DELTA + hrs_offset * 3600 
     tm = time.gmtime(t)
     machine.RTC().datetime((tm[0], tm[1], tm[2], tm[6] + 1, tm[3], tm[4], tm[5], 0))
-
+    
 
 if __name__ == "__main__":
     ip = None
     ip = get_wifi()
     if ip:
-        print(f"ip: {ip}")
+        menu_item (1,f'ip: {ip}')
     else:
         ip = None
-        print(f"ip: NOT SET")
-
+        menu_item (1,f'ip: NOT SET')
+        
     set_time(-5)
-    print(time.localtime())
+    print (time.localtime())

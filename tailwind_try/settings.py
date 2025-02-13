@@ -52,6 +52,7 @@ MIDDLEWARE = [
     "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
+# install help for tailwind: https://django-tailwind.readthedocs.io/en/latest/installation.html
 ROOT_URLCONF = 'tailwind_try.urls'
 TAILWIND_APP_NAME = 'theme'
 INTERNAL_IPS = [

@@ -7,6 +7,7 @@ from .views import *
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
     path("template/", TemplateView.as_view(), name="template_sheet"),
+    path("granary/<int:pk>/", GranaryView.as_view(), name="granary_detail"),
 
     # htmx
     path ('live_latest_update/<int:pk>/', views.live_latest_update, name='live_latest_updates'),

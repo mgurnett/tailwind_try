@@ -55,6 +55,21 @@ class TemplateView(TemplateView):
         # print (colors)
         context['colors'] = colors
         return context
+ 
+
+class GranaryView(TemplateView):
+    template_name = "core/granary.html"
+    model = Chain
+
+    def get_context_data(self, **kwargs):
+        granary = Chain.objects.get(pk=self.kwargs["pk"])
+ 
+        context = super(GranaryView, self).get_context_data(**kwargs)
+        context['granary'] = granary
+        context['sensors'] = Sensor.objects.filter(chain=granary).order_by('depth')
+        context['num_of_readings'] = Reading.objects.filter(sensor__chain=granary).count()
+        context['graph'] = granary_graph(granary).to_html()
+        return context
     
 
 # ============LIVE UPDATES================= 

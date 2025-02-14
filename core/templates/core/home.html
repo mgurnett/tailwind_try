@@ -20,7 +20,9 @@
       <tr>
         
         <td>
-          <button class="badge badge-accent text-lg">{{granary.serial_number}}</button>
+          <a href="{% url 'granary_detail' granary.id %}">
+            <button class="badge badge-secondary text-lg">{{granary.serial_number}}</button>
+          </a>
         </td>
 
         <td>

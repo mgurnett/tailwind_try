@@ -28,12 +28,12 @@ def granary_graph(bin):
         color="sensor_depth",
         trendline="rolling", 
         trendline_options=dict(window=5),
-        width=1100, 
-        height=800,
+        # width=1100, 
+        # height=800,
         labels={
             "recorded": "Date and Time of Measurement (last 24 hours)",
             "value": "Temperature (C)",
-            "sensor_depth": "Depth from the top (ft)"
+            "sensor_depth": "Depth (ft)"
         },
     )
     fig.update_traces(
@@ -47,9 +47,9 @@ def granary_graph(bin):
             ),
             selector=dict(mode='markers')
         )
-    fig.update_layout(
-        title=dict(text=f"{bin.serial_number} Granary: {bin.name} - {bin.description}", font=dict(size=30), automargin=True, yref='paper')
-        )
+    # fig.update_layout(
+    #     title=dict(text=f"{bin.serial_number} Granary: {bin.name} - {bin.description}", font=dict(size=30), automargin=True, yref='paper')
+    #     )
     # fig.update_layout(hovermode="x unified")
     fig.add_shape(type='line',
                 x0=df.recorded.min(),
@@ -61,12 +61,22 @@ def granary_graph(bin):
                 # yref='y'
                 )       
 
+    # fig.update_layout(
+    #     {
+    #         # "paper_bgcolor": "rgb(142, 153, 215)",
+    #         "paper_bgcolor": "#d2d0d1", #base-200
+    #         "plot_bgcolor": "#f1eff0", #base-100
+    #     }
+    # )
     fig.update_layout(
         {
-            "paper_bgcolor": "rgb(142, 153, 215)",
-            "plot_bgcolor": "rgb(161, 170, 222)",
+            "paper_bgcolor": "#d2d0d1",  # base-200
+            "plot_bgcolor": "#f1eff0",  # base-100
         }
     )
+
+    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='#6686b9')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='#6686b9')
 
     return fig
 

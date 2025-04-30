@@ -30,7 +30,7 @@
         </td>
 
         <td>
-          {% if granary.highest_current_temp.sensor %}
+          {% if granary.highest_current_temp.sensor %} 
             <h3>At {{granary.highest_current_temp.sensor.depth__str}}, the temperature is: {% temp_text_colour__html granary.highest_current_temp.value granary.highest_current_temp.sensor.alarm granary.highest_current_temp.alarm_state %}</h3>
           {% endif %}
           <div id="latest_high_temp-{{ granary.id }}"  
